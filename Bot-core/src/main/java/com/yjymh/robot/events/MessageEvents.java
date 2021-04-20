@@ -3,13 +3,16 @@ package com.yjymh.robot.events;
 import com.yjymh.robot.command.CommandConfig;
 import com.yjymh.robot.command.EverywhereCommand;
 import com.yjymh.robot.command.FriendCommand;
+import com.yjymh.robot.command.GroupCommand;
 import com.yjymh.robot.utils.StringUtil;
 import net.mamoe.mirai.contact.Friend;
+import net.mamoe.mirai.contact.Member;
 import net.mamoe.mirai.contact.User;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.ListeningStatus;
 import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
+import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 import net.mamoe.mirai.message.data.Message;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +38,7 @@ public class MessageEvents extends SimpleListenerHost {
 
         String oriMsg = event.getMessage().contentToString();
 
-        if(!commandConfig.isCommand(oriMsg)) {
+        if (!commandConfig.isCommand(oriMsg)) {
             return ListeningStatus.LISTENING;
         }
 
@@ -46,7 +49,7 @@ public class MessageEvents extends SimpleListenerHost {
 
         Message result = command.execute(sender, getArgs(oriMsg), event.getMessage(), event.getSubject());
 
-        if (result!=null) {
+        if (result != null) {
             event.getSubject().sendMessage(result);
         }
 
@@ -64,7 +67,7 @@ public class MessageEvents extends SimpleListenerHost {
         String oriMsg = event.getMessage().contentToString();
 
 
-        if(!commandConfig.isCommand(oriMsg)) {
+        if (!commandConfig.isCommand(oriMsg)) {
             return ListeningStatus.LISTENING;
         }
         EverywhereCommand command = (EverywhereCommand) commandConfig.getCommand(oriMsg, commandConfig.everywhereCommands);
@@ -75,13 +78,41 @@ public class MessageEvents extends SimpleListenerHost {
 
         Message result = command.execute(sender, getArgs(oriMsg), event.getMessage(), event.getSubject());
 
-        if (result!=null) {
+        if (result != null) {
             event.getSubject().sendMessage(result);
         }
 
         event.intercept();
 
         return ListeningStatus.LISTENING;
+    }
+
+    @NotNull
+    @EventHandler
+    public ListeningStatus onGroupMessage(@NotNull GroupMessageEvent event) {
+        Member sender = event.getSender();
+
+        String oriMsg = event.getMessage().contentToString();
+
+        if (!commandConfig.isCommand(oriMsg)) {
+            return ListeningStatus.LISTENING;
+        }
+
+        GroupCommand command = (GroupCommand) commandConfig.getCommand(oriMsg, commandConfig.groupCommands);
+        if (null == command) {
+            return ListeningStatus.LISTENING;
+        }
+
+        Message result = command.execute(sender, getArgs(oriMsg), event.getMessage(), event.getSubject());
+
+        if (result != null) {
+            event.getSubject().sendMessage(result);
+        }
+
+        event.intercept();
+
+        return ListeningStatus.LISTENING;
+
     }
 
 
