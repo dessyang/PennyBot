@@ -4,6 +4,8 @@ import com.yjymh.robot.command.CommandConfig;
 import com.yjymh.robot.command.EverywhereCommand;
 import com.yjymh.robot.command.FriendCommand;
 import com.yjymh.robot.command.GroupCommand;
+import com.yjymh.robot.entity.KeyWord;
+import com.yjymh.robot.service.KeyWordService;
 import com.yjymh.robot.utils.StringUtil;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Member;
@@ -31,9 +33,12 @@ public class MessageEvents extends SimpleListenerHost {
     @Autowired
     private CommandConfig commandConfig;
 
+    @Autowired
+    private KeyWordService keyWordService;
+
     @NotNull
     @EventHandler
-    public ListeningStatus onFriendMessage(@NotNull FriendMessageEvent event) {
+    public ListeningStatus commandFriendMessage(@NotNull FriendMessageEvent event) {
         Friend sender = event.getSender();
 
         String oriMsg = event.getMessage().contentToString();
@@ -58,11 +63,10 @@ public class MessageEvents extends SimpleListenerHost {
         return ListeningStatus.LISTENING;
     }
 
-
     // 所有消息事件
     @NotNull
     @EventHandler
-    public ListeningStatus onMessage(@NotNull MessageEvent event) {
+    public ListeningStatus commandMessage(@NotNull MessageEvent event) {
         User sender = event.getSender();
         String oriMsg = event.getMessage().contentToString();
 
@@ -89,7 +93,7 @@ public class MessageEvents extends SimpleListenerHost {
 
     @NotNull
     @EventHandler
-    public ListeningStatus onGroupMessage(@NotNull GroupMessageEvent event) {
+    public ListeningStatus commandGroupMessage(@NotNull GroupMessageEvent event) {
         Member sender = event.getSender();
 
         String oriMsg = event.getMessage().contentToString();
@@ -115,6 +119,28 @@ public class MessageEvents extends SimpleListenerHost {
 
     }
 
+    @NotNull
+    @EventHandler
+    public ListeningStatus plainGroupMessage(@NotNull GroupMessageEvent event){
+
+        Long group = event.getGroup().getId();
+        String oriMsg = event.getMessage().contentToString();
+
+        if (commandConfig.isCommand(oriMsg)) {
+            return ListeningStatus.LISTENING;
+        }
+
+        KeyWord keyWord = keyWordService.queryWordByKey(oriMsg, group);
+
+
+
+        if (keyWord!=null) {
+            String word = keyWord.getWord();
+            event.getGroup().sendMessage(word);
+        }
+
+        return ListeningStatus.LISTENING;
+    }
 
     private ArrayList<String> getArgs(String msg) {
         String[] args = msg.trim().split(" ");
