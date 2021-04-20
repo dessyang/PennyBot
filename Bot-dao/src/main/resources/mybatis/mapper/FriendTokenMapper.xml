@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yjymh.robot.mapper.FriendTokenMapper">
+    <select id="queryFriendById" resultType="FriendToken" parameterType="Long">
+        select * from friend where account = ${account}
+    </select>
+    
+    <select id="queryFriendByToken" resultType="FriendToken" parameterType="String">
+        select * from friend where token = '${token}'
+    </select>
+    
+    <insert id="addFriend" parameterType="FriendToken">
+        INSERT INTO `friend` (`account`, `token`, `status`, `update_time`, `create_time`) VALUES (#{account}, #{token}, #{status}, #{update_time}, #{create_time})
+    </insert>
+    
+    <update id="updateFriend" parameterType="FriendToken">
+        UPDATE `friend` SET `token` = '${token}', `update_time` = '${update_time}' WHERE account = ${account}
+    </update>
+
+    <delete id="deleteFriend" parameterType="Long">
+        DELETE FROM `friend` WHERE `account`=${account}
+    </delete>
+</mapper>
