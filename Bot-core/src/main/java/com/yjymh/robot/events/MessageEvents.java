@@ -130,11 +130,15 @@ public class MessageEvents extends SimpleListenerHost {
             return ListeningStatus.LISTENING;
         }
 
-        KeyWord keyWord = keyWordService.queryWordByKey(oriMsg, group);
+        try {
+            KeyWord keyWord = keyWordService.queryWordByKey(oriMsg, group);
 
-        if (keyWord != null) {
-            String word = keyWord.getWord();
-            event.getGroup().sendMessage(word);
+            if (keyWord != null) {
+                String word = keyWord.getWord();
+                event.getGroup().sendMessage(word);
+            }
+        } catch (Exception e) {
+            return ListeningStatus.LISTENING;
         }
 
         return ListeningStatus.LISTENING;
