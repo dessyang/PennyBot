@@ -36,7 +36,6 @@ public class MessageEvents extends SimpleListenerHost {
         String oriMsg = event.getMessage().contentToString();
 
         if(!commandConfig.isCommand(oriMsg)) {
-            event.getFriend().sendMessage(event.getMessage());
             return ListeningStatus.LISTENING;
         }
 
