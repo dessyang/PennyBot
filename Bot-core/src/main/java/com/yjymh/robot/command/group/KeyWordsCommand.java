@@ -10,6 +10,7 @@ import net.mamoe.mirai.contact.Member;
 import net.mamoe.mirai.contact.MemberPermission;
 import net.mamoe.mirai.message.data.Message;
 import net.mamoe.mirai.message.data.MessageChain;
+import net.mamoe.mirai.message.data.PlainText;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
@@ -42,31 +43,53 @@ public class KeyWordsCommand implements GroupCommand {
         keyWordService.createTable(group);
 
         if (permission != MemberPermission.MEMBER) {
-            if (args.size() == 2) {
-                String key = args.get(0);
-                String word = args.get(1);
+            String com = args.get(0); // 获取指令模式
 
-                keyWord.setKey(key);
-                keyWord.setWord(word);
-                keyWord.setGroup(group);
-                keyWord.setStatus(true);
-                keyWord.setMember(sendId);
-                keyWord.setCreate_time(time);
-                keyWord.setUpdate_time(time);
-
-                boolean flag = keyWordService.keyWordExits(key, group);
-
-                if (!flag) {
-                    keyWordService.addKeyWord(keyWord);
-                } else {
-                    keyWordService.updateKeyWord(keyWord);
-                }
-            } else {
-                subject.sendMessage("格式错误");
+            switch (com) {
+                case "del":
+                    return new PlainText("删除成功");
+                case "add":
+                    return new PlainText(addKeyWord(group, sendId, args, keyWord, time));
+                default:
+                    return new PlainText("指令错误");
             }
         } else {
             subject.sendMessage("权限不足");
         }
         return null;
+    }
+
+    public String addKeyWord(Long group, Long send, ArrayList<String> args, KeyWord keyWord, Date time) {
+        if (args.size() >= 3) {
+            String key = args.get(1);
+            String word = args.get(2);
+            for (int i = 3; i < args.size(); i++) {
+                word = word + " " + args.get(i);
+            }
+            keyWord.setKey(key);
+            keyWord.setWord(word);
+            keyWord.setGroup(group);
+            keyWord.setStatus(true);
+            keyWord.setMember(send);
+            keyWord.setCreate_time(time);
+            keyWord.setUpdate_time(time);
+
+            boolean flag = keyWordService.keyWordExits(key, group);
+
+            int i = 0;
+
+            if (!flag) {
+                i = keyWordService.addKeyWord(keyWord);
+            } else {
+                i = keyWordService.updateKeyWord(keyWord);
+            }
+            if (i == 0) {
+                return "创建失败";
+            } else {
+                return "创建成功";
+            }
+        } else {
+            return "格式错误";
+        }
     }
 }

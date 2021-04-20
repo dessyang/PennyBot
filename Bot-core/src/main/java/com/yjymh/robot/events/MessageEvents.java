@@ -121,7 +121,7 @@ public class MessageEvents extends SimpleListenerHost {
 
     @NotNull
     @EventHandler
-    public ListeningStatus plainGroupMessage(@NotNull GroupMessageEvent event){
+    public ListeningStatus plainGroupMessage(@NotNull GroupMessageEvent event) {
 
         Long group = event.getGroup().getId();
         String oriMsg = event.getMessage().contentToString();
@@ -132,9 +132,7 @@ public class MessageEvents extends SimpleListenerHost {
 
         KeyWord keyWord = keyWordService.queryWordByKey(oriMsg, group);
 
-
-
-        if (keyWord!=null) {
+        if (keyWord != null) {
             String word = keyWord.getWord();
             event.getGroup().sendMessage(word);
         }
