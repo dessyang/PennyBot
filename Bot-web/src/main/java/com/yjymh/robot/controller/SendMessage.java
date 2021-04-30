@@ -9,7 +9,7 @@ import com.yjymh.robot.service.GroupTokenService;
 import com.yjymh.robot.utils.ResponseUtil;
 import net.mamoe.mirai.Bot;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,51 +22,53 @@ public class SendMessage {
     @Autowired
     private GroupTokenService groupTokenService;
 
-    @RequestMapping(value = "/sendfriend")
-    public String sendFriendMessage(@RequestParam("token") String token,
-                                    @RequestParam("msg") String msg) {
-        try {
-            Bot bot = PennyBot.getBot();
+    @PostMapping("/send")
+    public String send(@RequestParam String type,
+                       @RequestParam String token,
+                       @RequestParam String msg) {
+        Bot bot = PennyBot.getBot();
+        String response = ResponseUtil.setResponse(Response.PARAM_FAIL);
 
-            FriendToken friendToken = friendTokenService.queryFriendByToken(token);
-            if (msg != null && token != null) {
-                if (friendToken != null) {
-                    Long id = friendToken.getAccount();
-                    if (id != null) {
-                        bot.getFriend(id).sendMessage(msg);
-                        return ResponseUtil.setResponse(Response.SUCCESS);
+        if (type.contains("group")) {
+            try {
+                if (msg != null && token != null) {
+                    GroupToken groupToken = groupTokenService.queryGroupByToken(token);
+                    if (groupToken != null) {
+                        Long group = groupToken.getAccount();
+                        if (group != null) {
+                            bot.getGroup(group).sendMessage(msg);
+                            return ResponseUtil.setResponse(Response.SUCCESS);
+                        }
+                    } else {
+                        response = ResponseUtil.setResponse(Response.TOKEN_FAIL);
                     }
+                } else {
+                    response = ResponseUtil.setResponse(Response.PARAM_FAIL);
                 }
+            } catch (Exception e) {
+                response = ResponseUtil.setResponse(Response.FAIL);
             }
-
-            return ResponseUtil.setResponse(Response.TOKEN_FAIL);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseUtil.setResponse(Response.FAIL);
-        }
-    }
-
-    @RequestMapping(value = "/sendgroup")
-    public String sendGroupMessage(@RequestParam("token") String token,
-                                   @RequestParam("msg") String msg) {
-        try {
-            Bot bot = PennyBot.getBot();
-
-            GroupToken groupToken = groupTokenService.queryGroupByToken(token);
-
-            if (msg != null && token != null) {
-                if (groupToken != null) {
-                    Long group = groupToken.getAccount();
-                    if (group != null) {
-                        bot.getGroup(group).sendMessage(msg);
-                        return ResponseUtil.setResponse(Response.SUCCESS);
+        } else if (type.contains("friend")) {
+            try {
+                if (msg != null && token != null) {
+                    FriendToken friendToken = friendTokenService.queryFriendByToken(token);
+                    if (friendToken != null) {
+                        Long id = friendToken.getAccount();
+                        if (id != null) {
+                            bot.getFriend(id).sendMessage(msg);
+                            response = ResponseUtil.setResponse(Response.SUCCESS);
+                        }
+                    } else {
+                        response = ResponseUtil.setResponse(Response.TOKEN_FAIL);
                     }
+                } else {
+                    response = ResponseUtil.setResponse(Response.PARAM_FAIL);
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+                response = ResponseUtil.setResponse(Response.FAIL);
             }
-            return ResponseUtil.setResponse(Response.TOKEN_FAIL);
-        } catch (Exception e) {
-            return ResponseUtil.setResponse(Response.FAIL);
         }
+        return response;
     }
-
 }

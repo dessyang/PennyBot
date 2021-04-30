@@ -4,7 +4,8 @@ public enum Response {
 
     SUCCESS(0, "发送成功"),
     TOKEN_FAIL(1, "Token错误"),
-    FAIL(2, "错误");
+    FAIL(2, "错误"),
+    PARAM_FAIL(3, "参数错误");
 
     private int code;
     private String desc;
