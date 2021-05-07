@@ -11,6 +11,14 @@
 
     <artifactId>Bot-client</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.yjymh</groupId>
+            <artifactId>Bot-dao</artifactId>
+            <version>${botVersion}</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>

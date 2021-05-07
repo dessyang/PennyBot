@@ -11,21 +11,22 @@ import java.io.IOException;
  */
 public class BaseRequest {
 
+    protected final String DEFAULT_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36";
     // 存放请求返回的原始报文
     protected String body;
 
-    protected String header = "";
-
     /**
      * 获取api数据映射到实体类
-     * @param url 网页链接
+     *
+     * @param url      网页链接
      * @param classOfT 不知道
-     * @param <T> 不知道
+     * @param <T>      不知道
      * @return 封装类
      */
-    protected <T> T getDataByAPI(String url, Class<T> classOfT){
+    protected <T> T getDataByAPI(String url, Class<T> classOfT) {
         try {
             body = Jsoup.connect(url)
+                    .userAgent(DEFAULT_UA)
                     .ignoreContentType(true)
                     .execute()
                     .body();
@@ -38,19 +39,11 @@ public class BaseRequest {
 
     /**
      * 获取api数据返回json对象
+     *
      * @param url 链接
      * @return JSONObject (fastjson)
      */
-    protected JSONObject getDataByAPI(String url){
-        try {
-            body = Jsoup.connect(url)
-                    .ignoreContentType(true)
-                    .execute()
-                    .body();
-            return JSON.parseObject(body);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+    protected JSONObject getDataByAPI(String url) {
+        return getDataByAPI(url, JSONObject.class);
     }
 }

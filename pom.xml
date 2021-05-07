@@ -26,7 +26,7 @@
 
 
     <properties>
-        <botVersion>0.3.0</botVersion>
+        <botVersion>0.3.2</botVersion>
     </properties>
 
     <dependencies>

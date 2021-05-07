@@ -1,4 +1,4 @@
-package com.yjymh.robot.service.Impl;
+package com.yjymh.robot.service.impl;
 
 import com.yjymh.robot.entity.GroupToken;
 import com.yjymh.robot.mapper.GroupTokenMapper;
