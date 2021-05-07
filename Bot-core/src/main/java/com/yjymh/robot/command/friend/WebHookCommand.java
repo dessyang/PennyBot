@@ -5,7 +5,7 @@ import com.yjymh.robot.entity.CommandProperties;
 import com.yjymh.robot.entity.FriendToken;
 import com.yjymh.robot.service.FriendTokenService;
 import com.yjymh.robot.sys.annotate.Command;
-import com.yjymh.robot.uitls.MD5Util;
+import com.yjymh.robot.utils.MD5Util;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.message.data.Message;
 import net.mamoe.mirai.message.data.MessageChain;
