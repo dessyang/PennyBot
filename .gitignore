@@ -36,6 +36,7 @@ build/
 ### mirai ###
 deviceInfo.json
 cache
+logs
 
 ### springboot ###
 Bot-web/src/main/resources/application-test.properties
