@@ -45,10 +45,11 @@ public class BiliJobs {
         ArrayList<BiliLive> list = biliLiveService.queryLiveId();
 
         for (int i = 0; i < list.size(); i++) {
-            String msg = "%s 正在直播\n%s";
+            String msg = "%s 正在直播\n%s\n%s";
 
             BiliLive info = list.get(i);
             Long liveId = info.getLiveId();
+            String url = "https://live.bilibili.com/" + liveId;
 
             boolean liveStatus = info.isLiveStatus();
             Long uid = info.getUid();
@@ -73,13 +74,13 @@ public class BiliJobs {
                     File file = new File(fileName);
                     Image image = bot.getAsFriend().uploadImage(ExternalResource.create(file));
                     chain = new MessageChainBuilder()
-                            .append(new PlainText(String.format(msg, name, title)))
+                            .append(new PlainText(String.format(msg, name, title, url)))
                             .append(image)
                             .build();
                 } catch (Exception e) {
                     e.printStackTrace();
                     chain = new MessageChainBuilder()
-                            .append(new PlainText(String.format(msg, name, title)))
+                            .append(new PlainText(String.format(msg, name, title, url)))
                             .build();
                 }
 
