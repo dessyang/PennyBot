@@ -83,16 +83,4 @@ public class BiliRequestServiceImpl implements BiliRequestService {
         return liveInfoByUid.getJSONObject("data").getJSONObject("live_room").getString("cover");
     }
 
-    @Override
-    public Dynamic getNewDynamic(Long uid) {
-        // TODO
-        return null;
-    }
-
-    @Override
-    public List<Dynamic> getDynamicList(Long uid) {
-        // TODO
-        return null;
-    }
-
 }

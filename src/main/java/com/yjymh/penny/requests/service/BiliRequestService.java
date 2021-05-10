@@ -1,9 +1,5 @@
 package com.yjymh.penny.requests.service;
 
-import com.yjymh.penny.entity.Dynamic;
-
-import java.util.List;
-
 public interface BiliRequestService {
     /**
      * 通过用户id获取房间号
@@ -77,20 +73,4 @@ public interface BiliRequestService {
      * @return 直播封面链接
      */
     String getLiveCoverLink(long uid);
-
-    /**
-     * 获取最新的一个动态
-     *
-     * @param uid 用户uid
-     * @return 动态封装类
-     */
-    Dynamic getNewDynamic(Long uid);
-
-    /**
-     * 获取所有的动态
-     *
-     * @param uid 用户uid
-     * @return List<Dynamic>
-     */
-    List<Dynamic> getDynamicList(Long uid);
 }
