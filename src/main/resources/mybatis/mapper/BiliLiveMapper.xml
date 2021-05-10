@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yjymh.penny.mapper.BiliLiveMapper">
+    <select id="queryLiveId" resultType="BiliLive">
+        SELECT *
+        FROM `bili_live`
+    </select>
+
+    <select id="queryBiliLiveByUid" parameterType="Long" resultType="BiliLive">
+        SELECT * FROM `bili_live`
+        <where>
+            uid = #{uid}
+        </where>
+        LIMIT 1
+    </select>
+
+    <insert id="addBiliLive" parameterType="BiliLive">
+        INSERT INTO `bili_live` (`uid`, `live_id`, `name`, `live_status`, `star_group`, `create_time`, `update_time`)
+        VALUES (${uid}, ${liveId}, '${name}', ${liveStatus}, '${starGroup}', '${createTime}', '${updateTime}')
+    </insert>
+
+    <update id="updateBiliLive" parameterType="BiliLive">
+        UPDATE `bili_live`
+        <set>
+            <if test="liveStatus != null">`live_status` = ${liveStatus},</if>
+            <if test="name != null">`name` = '${name}',</if>
+            <if test="starGroup != null">`star_group` = '${starGroup}',</if>
+            <if test="updateTime != null">`update_time` = '${updateTime}'</if>
+        </set>
+        <where>
+            uid = #{uid}
+        </where>
+    </update>
+
+    <delete id="delBiliLive" parameterType="long">
+        DELETE FROM bili_live
+        <where>
+            uid = #{uid}
+        </where>
+    </delete>
+
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yjymh.penny.mapper.KeyWordMapper">
+    <select id="queryWordByKey" resultType="KeyWord">
+        SELECT * FROM `${group}` WHERE `key` = '${key}' LIMIT 1
+    </select>
+
+    <update id="createTable" parameterType="Long">
+        CREATE TABLE If Not Exists `${group}`
+        (
+            `id`          int(11) NOT NULL AUTO_INCREMENT,
+            `key`         text     NOT NULL,
+            `word`        text     NOT NULL,
+            `group`       bigint(20) NOT NULL,
+            `member`      bigint(20) NOT NULL,
+            `status`      tinyint(1) NOT NULL,
+            `update_time` datetime NOT NULL,
+            `createTime` datetime NOT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    </update>
+
+    <insert id="addKeyWord" parameterType="KeyWord">
+        INSERT INTO `${group}` (`key`, `word`, `group`, `member`, `status`, `update_time`, `createTime`)
+        VALUES ('${key}', '${word}', ${group}, ${member}, ${status}, '${update_time}', '${createTime}')
+    </insert>
+
+    <update id="updateKeyWord" parameterType="KeyWord">
+        UPDATE `${group}` SET `word`='${word}', `member`=${member}, `update_time`='${update_time}' WHERE `key`= '${key}'
+    </update>
+
+    <delete id="deleteKeyWord">
+        DELETE FROM `${group}` WHERE `key` = '${key}'
+    </delete>
+</mapper>
