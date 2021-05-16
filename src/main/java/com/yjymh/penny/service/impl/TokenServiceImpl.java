@@ -60,6 +60,7 @@ public class TokenServiceImpl implements TokenService {
             case "group":
                 bot.getGroup(account).sendMessage(msg);
                 break;
+            default:
         }
         return ResponseUtil.setResponse(Response.SUCCESS);
     }

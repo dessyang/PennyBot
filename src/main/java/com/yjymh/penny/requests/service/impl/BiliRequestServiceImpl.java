@@ -57,6 +57,7 @@ public class BiliRequestServiceImpl implements BiliRequestService {
             case "女":
                 sex = 0;
                 break;
+            default:
         }
         return sex;
     }

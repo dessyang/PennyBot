@@ -1,6 +1,7 @@
 package com.yjymh.penny.command.group;
 
 import com.yjymh.penny.command.GroupCommand;
+import com.yjymh.penny.constant.Const;
 import com.yjymh.penny.entity.CommandProperties;
 import com.yjymh.penny.entity.KeyWord;
 import com.yjymh.penny.service.KeyWordService;
@@ -15,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * 关键词回复命令
@@ -41,7 +41,7 @@ public class KeyWordsCommand implements GroupCommand {
 
         long group = subject.getId();
         long sendId = sender.getId();
-        Timestamp time = new Timestamp(System.currentTimeMillis());
+        String time = String.valueOf(new Timestamp(System.currentTimeMillis()));
 
         MemberPermission permission = subject.get(sendId).getPermission();
 
@@ -65,20 +65,21 @@ public class KeyWordsCommand implements GroupCommand {
         return null;
     }
 
-    public String addKeyWord(Long group, Long send, ArrayList<String> args, KeyWord keyWord, Date time) {
-        if (args.size() >= 3) {
+    public String addKeyWord(Long group, Long send, ArrayList<String> args, KeyWord keyWord, String time) {
+        if (args.size() > THIRD_COMMAND) {
             String key = args.get(1);
-            String word = args.get(2);
+            StringBuilder word = new StringBuilder(args.get(2));
             for (int i = 3; i < args.size(); i++) {
-                word = word + " " + args.get(i);
+                word.append(Const.SPACE);
+                word.append(args.get(i));
             }
             keyWord.setKey(key);
-            keyWord.setWord(word);
+            keyWord.setWord(word.toString());
             keyWord.setGroup(group);
             keyWord.setStatus(true);
             keyWord.setMember(send);
-            keyWord.setCreate_time(time);
-            keyWord.setUpdate_time(time);
+            keyWord.setCreateTime(time);
+            keyWord.setUpdateTime(time);
 
             boolean flag = keyWordService.keyWordExits(key, group);
 

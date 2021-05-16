@@ -143,7 +143,9 @@ public class MessageEvents extends SimpleListenerHost {
         String[] args = msg.trim().split(" ");
         ArrayList<String> list = new ArrayList<>();
         for (String arg : args) {
-            if (StringUtil.isNotEmpty(arg)) list.add(arg);
+            if (StringUtil.isNotEmpty(arg)) {
+                list.add(arg);
+            }
         }
         list.remove(0);
         return list;

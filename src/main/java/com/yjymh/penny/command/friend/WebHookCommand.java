@@ -5,7 +5,7 @@ import com.yjymh.penny.entity.CommandProperties;
 import com.yjymh.penny.entity.Token;
 import com.yjymh.penny.service.TokenService;
 import com.yjymh.penny.sys.annotate.Command;
-import com.yjymh.penny.utils.MD5Util;
+import com.yjymh.penny.utils.Md5Util;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.contact.MemberPermission;
@@ -38,7 +38,7 @@ public class WebHookCommand implements FriendCommand {
         // TODO: 2021/5/10
         long sendId = sender.getId();
         String msg = "";
-        String newToken = MD5Util.toMD5(String.valueOf(sendId));
+        String newToken = Md5Util.toMd5(String.valueOf(sendId));
 
         Token tokenInfo = new Token() {{
             setAccount(sendId);

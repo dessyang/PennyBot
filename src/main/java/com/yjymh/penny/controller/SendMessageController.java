@@ -25,7 +25,7 @@ public class SendMessageController {
 
         String response = null;
 
-        if (!Const.EMPTY.equals(type) && !token.equals("") && !msg.equals("")) {
+        if (!Const.EMPTY.equals(type) && !Const.EMPTY.equals(token) && !Const.EMPTY.equals(msg)) {
 
             Token tokenInfo = tokenService.getTokenInfo(type, token);
 

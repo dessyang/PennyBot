@@ -1,5 +1,6 @@
 package com.yjymh.penny.command;
 
+import com.yjymh.penny.constant.Const;
 import com.yjymh.penny.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,15 +31,15 @@ public class CommandConfig {
     public boolean isCommand(String msg) {
         return commandHeads.stream().anyMatch(head -> msg.startsWith(head));
     }
-    
+
     public Command getCommand(String msg, Map<String, Command> commandMap) {
-        String[] temp = msg.split(" ");
+        String[] temp = msg.split(Const.SPACE);
 
         String headcommand = temp[0];
 
         List<String> temps = commandHeads.stream()
                 .filter(head -> headcommand.startsWith(head) && StringUtil.isNotEmpty(head))
-                .map(head -> headcommand.replaceFirst(head, ""))
+                .map(head -> headcommand.replaceFirst(head, Const.EMPTY))
                 .collect(Collectors.toList());
 
         String commandStr;
@@ -51,7 +52,9 @@ public class CommandConfig {
         return commandMap.getOrDefault(commandStr.toLowerCase(), null);
     }
 
-    // 注册指令 (批量）
+    /**
+     * 注册指令 (批量）
+     */
     public void registerCommands(List<Command> commandList) {
         if (null == commandList || commandList.size() <= 0) {
             return;
@@ -59,7 +62,9 @@ public class CommandConfig {
         commandList.forEach(command -> registerCommand(command));
     }
 
-    // 注册指令 单个
+    /**
+     * 注册指令 单个
+     */
     public void registerCommand(Command command) {
         Map<String, Command> tempCommands = new HashMap<>();
         tempCommands.put(command.properties().getName().toLowerCase(), command);
@@ -80,11 +85,12 @@ public class CommandConfig {
 
     }
 
-    // 指令头部
+    /**
+     * 指令头部
+     */
     public String[] initCommandHeads() {
-        String[] heads = new String[]{
-                "."
+        return new String[]{
+                Command.COMMAND_HEAD
         };
-        return heads;
     }
 }

@@ -12,7 +12,6 @@ public interface Command {
     String COMMAND_FAULT = "指令错误";
     String DELETE_SUCCESS = "删除成功";
     String ADD_SUCCESS = "添加成功";
-
     String ADD_COMMAND_1 = "add";
     String ADD_COMMAND_2 = "a";
     String DELETE_COMMAND_1 = "delete";
@@ -21,6 +20,10 @@ public interface Command {
     String UPDATE_COMMAND_1 = "update";
     String UPDATE_COMMAND_2 = "upd";
     String UPDATE_COMMAND_3 = "u";
+    String COMMAND_HEAD = ".";
+    Integer FIRST_COMMAND = 0;
+    Integer SECOND_COMMAND = 1;
+    Integer THIRD_COMMAND = 2;
 
     /**
      * 指令配置文件
