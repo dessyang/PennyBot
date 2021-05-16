@@ -19,6 +19,8 @@ import java.util.Date;
 
 /**
  * 关键词回复命令
+ *
+ * @author yjymh
  */
 @Command
 public class KeyWordsCommand implements GroupCommand {
@@ -39,25 +41,26 @@ public class KeyWordsCommand implements GroupCommand {
 
         long group = subject.getId();
         long sendId = sender.getId();
-        Timestamp time = new Timestamp(new Date().getTime());
+        Timestamp time = new Timestamp(System.currentTimeMillis());
 
         MemberPermission permission = subject.get(sendId).getPermission();
 
         keyWordService.createTable(group);
 
         if (permission != MemberPermission.MEMBER) {
-            String com = args.get(0); // 获取指令模式
+            // 获取指令模式
+            String com = args.get(0);
 
             switch (com) {
-                case "del":
-                    return new PlainText("删除成功");
-                case "add":
+                case DELETE_COMMAND_2:
+                    return new PlainText(DELETE_SUCCESS);
+                case ADD_COMMAND_1:
                     return new PlainText(addKeyWord(group, sendId, args, keyWord, time));
                 default:
-                    return new PlainText("指令错误");
+                    return new PlainText(COMMAND_FAULT);
             }
         } else {
-            subject.sendMessage("权限不足");
+            subject.sendMessage(PERMISSION_DENIED);
         }
         return null;
     }
@@ -92,7 +95,7 @@ public class KeyWordsCommand implements GroupCommand {
                 return "创建成功";
             }
         } else {
-            return "格式错误";
+            return COMMAND_FAULT;
         }
     }
 }

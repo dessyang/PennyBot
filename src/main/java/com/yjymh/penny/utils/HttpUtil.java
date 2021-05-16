@@ -1,6 +1,5 @@
 package com.yjymh.penny.utils;
 
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
@@ -8,6 +7,9 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 
+/**
+ * @author yjymh
+ */
 public class HttpUtil {
 
     public static String getImage(String imgUrl, String fileName) throws Exception {
@@ -35,11 +37,11 @@ public class HttpUtil {
         return fileName;
     }
 
-    public static String getImage(String imgurl) throws Exception {
-        return getImage(imgurl, "temp.jpg");
+    public static String getImage(String imgUrl) throws Exception {
+        return getImage(imgUrl, "temp.jpg");
     }
 
-    public static <T> T getDataByAPI(String apiUrl, Class<T> classOfT) {
+    public static <T> T getDataByApi(String apiUrl, Class<T> classOfT) {
         try {
             URL url = new URL(apiUrl);
             URLConnection con = url.openConnection();
@@ -61,10 +63,8 @@ public class HttpUtil {
         }
     }
 
-    public static JSONObject getDataByAPI(String apiUrl) {
-        return getDataByAPI(apiUrl, JSONObject.class);
+    public static JSONObject getDataByApi(String apiUrl) {
+        return getDataByApi(apiUrl, JSONObject.class);
     }
-
-
 
 }

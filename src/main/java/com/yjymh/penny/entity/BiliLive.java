@@ -5,6 +5,9 @@ import com.yjymh.penny.requests.service.impl.BiliRequestServiceImpl;
 
 import java.util.Date;
 
+/**
+ * @author yjymh
+ */
 public class BiliLive {
     private Long uid;
     private Long liveId;

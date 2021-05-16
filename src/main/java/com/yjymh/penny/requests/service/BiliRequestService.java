@@ -1,5 +1,8 @@
 package com.yjymh.penny.requests.service;
 
+/**
+ * @author yjymh
+ */
 public interface BiliRequestService {
     /**
      * 通过用户id获取房间号
@@ -64,8 +67,7 @@ public interface BiliRequestService {
      * @return 直播间标题
      */
     String getLiveTitle(long uid);
-
-
+    
     /**
      * 获取直播间封面链接
      *

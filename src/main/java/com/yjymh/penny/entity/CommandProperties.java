@@ -3,11 +3,18 @@ package com.yjymh.penny.entity;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * @author yjymh
+ */
 public class CommandProperties {
     // TODO: 2021/5/10
-    // 指令名称
+    /**
+     * 指令名称
+     */
     public String name;
-    // 指令别名
+    /**
+     * 指令别名
+     */
     public ArrayList<String> alias;
 
     public CommandProperties(String name, ArrayList<String> alias) {

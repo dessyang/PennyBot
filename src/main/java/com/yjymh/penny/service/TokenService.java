@@ -2,6 +2,9 @@ package com.yjymh.penny.service;
 
 import com.yjymh.penny.entity.Token;
 
+/**
+ * @author yjymh
+ */
 public interface TokenService {
     Token queryTokenById(Token token);
 

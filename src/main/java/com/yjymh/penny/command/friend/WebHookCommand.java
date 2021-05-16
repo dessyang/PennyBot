@@ -19,13 +19,14 @@ import java.util.NoSuchElementException;
 
 /**
  * webhook开关命令
+ *
+ * @author yjymh
  */
 @Command
 public class WebHookCommand implements FriendCommand {
 
     @Autowired
     TokenService tokenService;
-
 
     @Override
     public CommandProperties properties() {
@@ -35,9 +36,9 @@ public class WebHookCommand implements FriendCommand {
     @Override
     public Message execute(Friend sender, ArrayList<String> args, MessageChain messageChain, Friend subject) {
         // TODO: 2021/5/10
-        Long sendId = sender.getId();
+        long sendId = sender.getId();
         String msg = "";
-        String newToken = MD5Util.toMD5(sendId.toString());
+        String newToken = MD5Util.toMD5(String.valueOf(sendId));
 
         Token tokenInfo = new Token() {{
             setAccount(sendId);
@@ -75,10 +76,10 @@ public class WebHookCommand implements FriendCommand {
                         tokenInfo.setAccount(groupId);
                         msg = secondCommand(args.get(0), tokenInfo, tokenService.queryTokenById(tokenInfo));
                     } else {
-                        msg = "权限不足";
+                        msg = PERMISSION_DENIED;
                     }
                 } catch (NumberFormatException e) {
-                    msg = "第三个参数应为纯数字";
+                    msg = THIRD_COMMAND_FAULT;
                 } catch (NoSuchElementException e) {
                     msg = "请确认机器人是否在该群";
                 }
@@ -94,8 +95,8 @@ public class WebHookCommand implements FriendCommand {
         String msg = "";
 
         switch (command) {
-            case "add":
-            case "a":
+            case ADD_COMMAND_1:
+            case ADD_COMMAND_2:
                 if (friendToken != null) {
                     msg = friendToken.getToken();
                 } else {
@@ -103,9 +104,9 @@ public class WebHookCommand implements FriendCommand {
                     msg = tokenInfo.getToken();
                 }
                 break;
-            case "update":
-            case "upd":
-            case "u":
+            case UPDATE_COMMAND_1:
+            case UPDATE_COMMAND_2:
+            case UPDATE_COMMAND_3:
                 if (friendToken != null) {
                     tokenService.updateToken(tokenInfo);
                 } else {
@@ -113,18 +114,18 @@ public class WebHookCommand implements FriendCommand {
                 }
                 msg = tokenInfo.getToken();
                 break;
-            case "delete":
-            case "del":
-            case "d":
+            case DELETE_COMMAND_1:
+            case DELETE_COMMAND_2:
+            case DELETE_COMMAND_3:
                 if (friendToken != null) {
                     tokenService.deleteToken(tokenInfo);
-                    msg = "删除成功";
+                    msg = DELETE_SUCCESS;
                 } else {
                     msg = "已经删除，不要重复操作";
                 }
                 break;
             default:
-                msg = "第二个指令错误";
+                msg = SECOND_COMMAND_FAULT;
         }
         return msg;
     }

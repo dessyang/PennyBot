@@ -1,4 +1,4 @@
-package com.yjymh.penny.jobs;
+package com.yjymh.penny.job;
 
 import com.yjymh.penny.bot.PennyBot;
 import com.yjymh.penny.entity.BiliLive;
@@ -23,6 +23,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
+/**
+ * @author yjymh
+ */
 @Configuration      //1.主要用于标记配置类，兼备Component的效果。
 @EnableScheduling   // 2.开启定时任务
 public class BiliJobs {

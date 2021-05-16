@@ -1,5 +1,8 @@
 package com.yjymh.penny.entity;
 
+/**
+ * @author yjymh
+ */
 public enum Response {
     // TODO: 2021/5/10
     SUCCESS(0, "发送成功"),

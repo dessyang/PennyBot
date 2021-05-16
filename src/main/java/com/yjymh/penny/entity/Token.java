@@ -4,8 +4,10 @@ import cn.hutool.core.date.DateUtil;
 
 import java.util.Date;
 
+/**
+ * @author yjymh
+ */
 public class Token {
-    // TODO: 2021/5/10
     private Long account;
     private String type;
     private String token;

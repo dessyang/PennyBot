@@ -1,5 +1,6 @@
 package com.yjymh.penny.controller;
 
+import com.yjymh.penny.constant.Const;
 import com.yjymh.penny.entity.Response;
 import com.yjymh.penny.entity.Token;
 import com.yjymh.penny.service.TokenService;
@@ -8,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author yjymh
+ */
 @RestController
 public class SendMessageController {
 
@@ -21,7 +25,7 @@ public class SendMessageController {
 
         String response = null;
 
-        if (!type.equals("") && !token.equals("") && !msg.equals("")) {
+        if (!Const.EMPTY.equals(type) && !token.equals("") && !msg.equals("")) {
 
             Token tokenInfo = tokenService.getTokenInfo(type, token);
 

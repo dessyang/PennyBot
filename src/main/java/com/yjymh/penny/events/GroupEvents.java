@@ -11,32 +11,56 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 
+/**
+ * @author yjymh
+ */
 @Component
 public class GroupEvents extends SimpleListenerHost {
 
     // TODO: 2021/5/10
-    //群员加群事件
+
+    /**
+     * 群员加群事件
+     *
+     * @param event
+     * @return
+     */
     @NotNull
     @EventHandler
     public ListeningStatus joinGroup(@NotNull MemberJoinEvent event) {
         return ListeningStatus.LISTENING;
     }
 
-    //群员退群事件
+    /**
+     * 群员退群事件
+     *
+     * @param event
+     * @return
+     */
     @NotNull
     @EventHandler
     public ListeningStatus leaveGroup(@NotNull MemberLeaveEvent event) {
         return ListeningStatus.LISTENING;
     }
 
-    //群成员被禁言
+    /**
+     * 群成员被禁言
+     *
+     * @param event
+     * @return
+     */
     @NotNull
     @EventHandler
     public ListeningStatus muteMember(@NotNull MemberMuteEvent event) {
         return ListeningStatus.LISTENING;
     }
 
-    //群成员被解除禁言
+    /**
+     * 群成员被解除禁言
+     *
+     * @param event
+     * @return
+     */
     @NotNull
     @EventHandler
     public ListeningStatus unMuteMember(@NotNull MemberUnmuteEvent event) {

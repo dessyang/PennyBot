@@ -1,6 +1,7 @@
 package com.yjymh.penny.bot;
 
 import com.yjymh.penny.command.CommandConfig;
+import com.yjymh.penny.constant.Const;
 import com.yjymh.penny.events.GroupEvents;
 import com.yjymh.penny.events.MessageEvents;
 import com.yjymh.penny.sys.AnnotateScanner;
@@ -8,22 +9,26 @@ import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
 import net.mamoe.mirai.event.GlobalEventChannel;
 import net.mamoe.mirai.event.ListenerHost;
+import net.mamoe.mirai.network.UnsupportedSliderCaptchaException;
+import net.mamoe.mirai.network.WrongPasswordException;
 import net.mamoe.mirai.utils.BotConfiguration;
 import net.mamoe.mirai.utils.BotConfiguration.MiraiProtocol;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @author yjymh
+ */
 @Component
-public class PennyBot implements ApplicationRunner {
-
-    private static final String deviceInfo = "deviceInfo.json";
-
+public class PennyBot {
+    private static final Logger logger = LoggerFactory.getLogger(PennyBot.class);
+    private static final String DEVICE_INFO = "DEVICE_INFO.json";
     private static Bot bot;
 
     @Autowired
@@ -42,7 +47,9 @@ public class PennyBot implements ApplicationRunner {
     @Value("${bot.device:pad}")
     private String device;
 
-    // 获取bot实例
+    /**
+     * 获取bot实例
+     */
     public static Bot getBot() {
         if (bot == null) {
             while (true) {
@@ -54,43 +61,45 @@ public class PennyBot implements ApplicationRunner {
         return bot;
     }
 
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        startBot();
-    }
-
-    // bot启动方法
+    /**
+     * bot启动方法
+     */
     public void startBot() {
-        if (botAccount != 0 & !botPwd.equals("")) {
+        if (botAccount != 0 & !Const.EMPTY.equals(botPwd)) {
+            try {
+                bot = BotFactory.INSTANCE.newBot(botAccount, botPwd, new BotConfiguration() {{
+                    fileBasedDeviceInfo(DEVICE_INFO);
+                    setProtocol(setDevice(device));
+                }});
 
-            bot = BotFactory.INSTANCE.newBot(botAccount, botPwd, new BotConfiguration() {{
-                fileBasedDeviceInfo(deviceInfo);
-                setProtocol(setDevice(device));
-            }});
+                bot.login();
 
-            bot.login();
+                // 注册指令
+                commandConfig.registerCommandHeads();
+                commandConfig.registerCommands(annotateScanner.getCommandList());
 
-            commandConfig.registerCommandHeads();
-            commandConfig.registerCommands(annotateScanner.getCommandList());
+                List<ListenerHost> events = Arrays.asList(
+                        messageEvents,
+                        groupEvents
+                );
+                // 监听消息事件和群组事件
+                for (ListenerHost event : events) {
+                    GlobalEventChannel.INSTANCE.registerListenerHost(event);
+                }
 
-            List<ListenerHost> events = Arrays.asList(
-                    messageEvents,
-                    groupEvents
-            );
-
-            for (ListenerHost event : events) {
-                GlobalEventChannel.INSTANCE.registerListenerHost(event);
+                new Thread(() -> {
+                    bot.join();
+                }).start();
+            } catch (UnsupportedSliderCaptchaException | WrongPasswordException e) {
+                logger.error(String.valueOf(e));
+                System.exit(1);
             }
-
-            new Thread(() -> {
-                bot.join();
-            }).start();
-        } else {
-            return;
         }
     }
 
-    // 设置登录设备
+    /**
+     * 设置登录设备
+     */
     private MiraiProtocol setDevice(String device) {
         switch (device) {
             case "phone":

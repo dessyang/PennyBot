@@ -4,6 +4,9 @@ import com.yjymh.penny.entity.BiliLive;
 
 import java.util.ArrayList;
 
+/**
+ * @author yjymh
+ */
 public interface BiliLiveService {
 
     boolean liveExits(Long uid);

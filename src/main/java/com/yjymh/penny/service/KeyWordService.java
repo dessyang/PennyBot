@@ -1,9 +1,11 @@
 package com.yjymh.penny.service;
 
 import com.yjymh.penny.entity.KeyWord;
-import org.springframework.stereotype.Service;
 
 
+/**
+ * @author yjymh
+ */
 public interface KeyWordService {
 
     boolean keyWordExits(String key, Long group);

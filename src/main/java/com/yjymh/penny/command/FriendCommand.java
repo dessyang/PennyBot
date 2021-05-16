@@ -6,6 +6,9 @@ import net.mamoe.mirai.message.data.MessageChain;
 
 import java.util.ArrayList;
 
+/**
+ * @author yjymh
+ */
 public interface FriendCommand extends Command {
     Message execute(Friend sender, ArrayList<String> args, MessageChain messageChain, Friend subject);
 }

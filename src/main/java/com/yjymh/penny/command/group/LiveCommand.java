@@ -21,6 +21,8 @@ import java.util.ArrayList;
 
 /**
  * 直播开播关注命令
+ *
+ * @author yjymh
  */
 @Command
 public class LiveCommand implements GroupCommand {
@@ -41,12 +43,15 @@ public class LiveCommand implements GroupCommand {
     @Override
     public Message execute(Member sender, ArrayList<String> args, MessageChain messageChain, Group subject) {
         // TODO: 2021/5/8 只有两个指令 一个添加关注一个取消关注
-        String msg = ""; // 需要返回的消息
+        // 需要返回的消息
+        String msg = "";
 
         try {
-            String com = args.get(0); // 第一个指令
+            // 第一个指令
+            String com = args.get(0);
             Long uid = Long.parseLong(args.get(1));
-            long id = subject.getId();  // 消息的来源id，可能是群组也可能是好友
+            // 消息的来源id，可能是群组也可能是好友
+            long id = subject.getId();
 
             switch (com) {
                 case "add":
@@ -57,6 +62,7 @@ public class LiveCommand implements GroupCommand {
                 case "d":
                     msg = delStar(uid, id);
                     break;
+                default:
             }
         } catch (NumberFormatException e) {
             msg = "第三个参数应为纯数字";

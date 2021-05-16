@@ -1,7 +1,6 @@
 package com.yjymh.penny.service.impl;
 
 import com.yjymh.penny.entity.BiliLive;
-import com.yjymh.penny.entity.KeyWord;
 import com.yjymh.penny.mapper.BiliLiveMapper;
 import com.yjymh.penny.service.BiliLiveService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
+/**
+ * @author yjymh
+ */
 @Service
 public class BiliLiveServiceImpl implements BiliLiveService {
 

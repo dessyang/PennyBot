@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author yjymh
+ */
 @Component
 public class CommandConfig {
     private static final Logger logger = LoggerFactory.getLogger(CommandConfig.class);

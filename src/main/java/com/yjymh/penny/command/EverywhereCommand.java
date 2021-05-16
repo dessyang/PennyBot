@@ -7,6 +7,9 @@ import net.mamoe.mirai.message.data.MessageChain;
 
 import java.util.ArrayList;
 
+/**
+ * @author yjymh
+ */
 public interface EverywhereCommand extends Command {
     Message execute(User sender, ArrayList<String> args, MessageChain messageChain, Contact subject);
 }
