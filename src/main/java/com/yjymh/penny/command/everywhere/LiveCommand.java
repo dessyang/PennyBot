@@ -55,7 +55,12 @@ public class LiveCommand implements EverywhereCommand {
                 case "删除":
                     msg = delStar(Long.parseLong(args.get(1)), sender, subject);
                     break;
+                case "list":
+                case "列表":
+                    msg = starList(sender, subject);
+                    break;
                 default:
+                    msg = "指令错误";
             }
         } catch (NumberFormatException e) {
             msg = "第三个参数应为纯数字";
@@ -149,6 +154,44 @@ public class LiveCommand implements EverywhereCommand {
                 biliLiveService.addBiliLiveByGroup(uid, subject.getId());
             }
             msg = biliRequestService.getName(uid) + StaticText.ADD_SUCCESS;
+        }
+
+        return msg;
+    }
+
+    private String starList(User sender, Contact subject) {
+        String msg = null;
+        ArrayList<BiliLive> biliLives = biliLiveService.queryBiliLiveList();
+        ArrayList<String> stars = new ArrayList<String>();
+        if (subject instanceof Friend) {
+            for (BiliLive live : biliLives) {
+                String starFriend = live.getStarFriend();
+                ArrayList<Long> longs = ListUtil.stringToLongList(starFriend);
+                boolean isExist = longs.contains(sender.getId());
+                if (isExist) {
+                    stars.add(live.getName() + "-->" + live.getUid());
+                }
+            }
+        }
+        if (subject instanceof Group) {
+            for (BiliLive live : biliLives) {
+                String starGroup = live.getStarGroup();
+                ArrayList<Long> longs = ListUtil.stringToLongList(starGroup);
+                boolean isExist = longs.contains(subject.getId());
+                if (isExist) {
+                    stars.add(live.getName() + "-->" + live.getUid());
+                }
+            }
+        }
+        if (stars.size() != 0){
+            StringBuffer stringBuffer = new StringBuffer();
+            stringBuffer.append("已关注用户：\n");
+            for (String star : stars) {
+                stringBuffer.append(star + "\n");
+            }
+            msg = stringBuffer.toString();
+        } else {
+            msg = "没有关注的用户";
         }
 
         return msg;
