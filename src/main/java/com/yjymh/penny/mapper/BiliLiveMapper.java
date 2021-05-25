@@ -12,22 +12,47 @@ import java.util.ArrayList;
 public interface BiliLiveMapper {
 
     /**
-     * 查询所有关注的直播
-     * @return
+     * 添加新up的关注
+     *
+     * @param biliLive 关注信息
+     * @return int
+     * @since 1.1.0
      */
-    ArrayList<BiliLive> queryLiveId();
+    int addBiliLive(BiliLive biliLive);
 
     /**
-     * 使用uid查询
-     * @param uid
-     * @return
+     * 查询所有关注的up
+     *
+     * @return 所有关注的up信息列表
+     * @since 1.1.0
+     */
+    ArrayList<BiliLive> queryBiliLiveList();
+
+    /**
+     * 通过uid查询up的关注信息
+     *
+     * @param uid up的uid
+     * @return up的关注信息
+     * @since 1.1.0
      */
     BiliLive queryBiliLiveByUid(Long uid);
 
-    int addBiliLive(BiliLive biliLive);
-
+    /**
+     * 更新up的关注信息
+     *
+     * @param biliLive up的关注信息
+     * @return int
+     * @since 1.1.0
+     */
     int updateBiliLive(BiliLive biliLive);
 
+    /**
+     * 删除up的关注信息
+     *
+     * @param uid up的uid
+     * @return int
+     * @since 1.1.0
+     */
     int delBiliLive(long uid);
 
 }

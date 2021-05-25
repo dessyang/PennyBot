@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author yjymh
+ */
 @Component
 public class AnnotateScanner implements ApplicationListener<ContextRefreshedEvent> {
 

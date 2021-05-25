@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yjymh.penny.mapper.BiliLiveMapper">
-    <select id="queryLiveId" resultType="BiliLive">
+    <select id="queryBiliLiveList" resultType="BiliLive">
         SELECT *
         FROM `bili_live`
     </select>
@@ -17,8 +17,22 @@
     </select>
 
     <insert id="addBiliLive" parameterType="BiliLive">
-        INSERT INTO `bili_live` (`uid`, `live_id`, `name`, `live_status`, `star_group`, `create_time`, `update_time`)
-        VALUES (${uid}, ${liveId}, '${name}', ${liveStatus}, '${starGroup}', '${createTime}', '${updateTime}')
+        INSERT INTO `bili_live` (`uid`,
+        `live_id`,
+        `name`,
+        `live_status`,
+        <if test="starFriend != null">`star_friend`,</if>
+        <if test="starGroup != null">`star_group`,</if>
+        `create_time`,
+        `update_time`)
+        VALUES (${uid},
+        ${liveId},
+        '${name}',
+        ${liveStatus},
+        <if test="starFriend != null">${starFriend},</if>
+        <if test="starGroup != null">${starGroup},</if>
+        '${createTime}',
+        '${updateTime}')
     </insert>
 
     <update id="updateBiliLive" parameterType="BiliLive">
@@ -26,8 +40,9 @@
         <set>
             <if test="liveStatus != null">`live_status` = ${liveStatus},</if>
             <if test="name != null">`name` = '${name}',</if>
+            <if test="starFriend != null">`star_friend` = '${starFriend}',</if>
             <if test="starGroup != null">`star_group` = '${starGroup}',</if>
-            <if test="updateTime != null">`update_time` = '${updateTime}'</if>
+            <if test="updateTime != null">`update_time` = '${updateTime}',</if>
         </set>
         <where>
             uid = #{uid}

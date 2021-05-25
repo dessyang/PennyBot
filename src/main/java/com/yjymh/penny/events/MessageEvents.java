@@ -32,6 +32,9 @@ public class MessageEvents extends SimpleListenerHost {
     @Autowired
     private KeyWordService keyWordService;
 
+    /**
+     * 所有消息事件
+     */
     @NotNull
     @EventHandler
     public ListeningStatus commandFriendMessage(@NotNull FriendMessageEvent event) {
@@ -59,7 +62,9 @@ public class MessageEvents extends SimpleListenerHost {
         return ListeningStatus.LISTENING;
     }
 
-    // 所有消息事件
+    /**
+     * 所有消息事件
+     */
     @NotNull
     @EventHandler
     public ListeningStatus commandMessage(@NotNull MessageEvent event) {

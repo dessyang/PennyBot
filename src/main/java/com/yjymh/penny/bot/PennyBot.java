@@ -28,7 +28,7 @@ import java.util.List;
 @Component
 public class PennyBot {
     private static final Logger logger = LoggerFactory.getLogger(PennyBot.class);
-    private static final String DEVICE_INFO = "DEVICE_INFO.json";
+    private static final String DEVICE_INFO = "devices_info.json";
     private static Bot bot;
 
     @Autowired

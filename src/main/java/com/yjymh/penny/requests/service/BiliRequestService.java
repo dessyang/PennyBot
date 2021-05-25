@@ -1,5 +1,10 @@
 package com.yjymh.penny.requests.service;
 
+import com.yjymh.penny.entity.Login;
+
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author yjymh
  */
@@ -63,11 +68,11 @@ public interface BiliRequestService {
     /**
      * 获取直播间标题
      *
-     * @param uid
+     * @param uid 用户uid
      * @return 直播间标题
      */
     String getLiveTitle(long uid);
-    
+
     /**
      * 获取直播间封面链接
      *
@@ -75,4 +80,28 @@ public interface BiliRequestService {
      * @return 直播封面链接
      */
     String getLiveCoverLink(long uid);
+
+    /**
+     * 获取最新动态
+     *
+     * @param uid 用户id
+     * @return 动态数据
+     */
+    List<Object> getDynamicList(long uid);
+
+    /**
+     * 获取登录相关的数据
+     *
+     * @return Login类
+     */
+    Login getLoginInfo();
+
+    /**
+     * 使用密钥获取cookies
+     *
+     * @param oauthKey
+     * @return
+     */
+    Map<String, String> getLoginCookies(String oauthKey);
+
 }

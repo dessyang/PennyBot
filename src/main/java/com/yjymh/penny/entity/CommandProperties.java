@@ -7,7 +7,6 @@ import java.util.Arrays;
  * @author yjymh
  */
 public class CommandProperties {
-    // TODO: 2021/5/10
     /**
      * 指令名称
      */

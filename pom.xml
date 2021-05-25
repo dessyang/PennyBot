@@ -17,7 +17,7 @@
 
 
     <properties>
-        <botVersion>1.0.0</botVersion>
+        <botVersion>1.1.0</botVersion>
     </properties>
 
     <dependencies>
@@ -128,6 +128,13 @@
             <artifactId>hutool-all</artifactId>
             <version>5.6.5</version>
         </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+        </dependency>
+
 
     </dependencies>
 
