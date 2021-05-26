@@ -6,6 +6,7 @@ import com.yjymh.penny.entity.CommandProperties;
 import com.yjymh.penny.requests.service.BiliRequestService;
 import com.yjymh.penny.service.BiliLiveService;
 import com.yjymh.penny.sys.annotate.Command;
+import com.yjymh.penny.utils.GroupUtil;
 import com.yjymh.penny.utils.ListUtil;
 import com.yjymh.penny.utils.StaticText;
 import net.mamoe.mirai.contact.Contact;
@@ -87,15 +88,19 @@ public class LiveCommand implements EverywhereCommand {
 
         }
         if (subject instanceof Group) {
-            ArrayList<Long> starGroup = ListUtil.stringToLongList(biliLiveInfo.getStarGroup());
-            boolean flag = starGroup.contains(subject.getId());
-            if (flag) {
-                starGroup.remove(subject.getId());
-                biliLiveInfo.setStarGroup(ListUtil.listToString(starGroup));
-                biliLiveService.updateBiliLive(biliLiveInfo);
-                msg = StaticText.DEL_SUCCESS;
+            if (GroupUtil.isNotMember(sender.getId(), (Group) subject)) {
+                ArrayList<Long> starGroup = ListUtil.stringToLongList(biliLiveInfo.getStarGroup());
+                boolean flag = starGroup.contains(subject.getId());
+                if (flag) {
+                    starGroup.remove(subject.getId());
+                    biliLiveInfo.setStarGroup(ListUtil.listToString(starGroup));
+                    biliLiveService.updateBiliLive(biliLiveInfo);
+                    msg = StaticText.DEL_SUCCESS;
+                } else {
+                    msg = StaticText.DEL_ED;
+                }
             } else {
-                msg = StaticText.DEL_ED;
+                msg = PERMISSION_DENIED;
             }
         }
 
@@ -129,21 +134,25 @@ public class LiveCommand implements EverywhereCommand {
 
             }
             if (subject instanceof Group) {
-                ArrayList<Long> starGroupList = ListUtil.stringToLongList(biliLiveInfo.getStarGroup());
-                if (starGroupList.contains(subject.getId())) {
-                    msg = StaticText.ADD_ED;
+                if (GroupUtil.isNotMember(senderId, (Group) subject)) {
+                    ArrayList<Long> starGroupList = ListUtil.stringToLongList(biliLiveInfo.getStarGroup());
+                    if (starGroupList.contains(subject.getId())) {
+                        msg = StaticText.ADD_ED;
+                    } else {
+                        starGroupList.add(subject.getId());
+
+                        String groups = ListUtil.listToString(starGroupList);
+
+                        BiliLive biliLive = new BiliLive() {{
+                            setUid(uid);
+                            setStarGroup(groups);
+                        }};
+
+                        int i = biliLiveService.updateBiliLive(biliLive);
+                        msg = biliLiveInfo.getName() + StaticText.ADD_SUCCESS;
+                    }
                 } else {
-                    starGroupList.add(subject.getId());
-
-                    String groups = ListUtil.listToString(starGroupList);
-
-                    BiliLive biliLive = new BiliLive() {{
-                        setUid(uid);
-                        setStarGroup(groups);
-                    }};
-
-                    int i = biliLiveService.updateBiliLive(biliLive);
-                    msg = biliLiveInfo.getName() + StaticText.ADD_SUCCESS;
+                    msg = PERMISSION_DENIED;
                 }
             }
         } else {
@@ -151,7 +160,11 @@ public class LiveCommand implements EverywhereCommand {
                 biliLiveService.addBiliLiveByFriend(uid, senderId);
             }
             if (subject instanceof Group) {
-                biliLiveService.addBiliLiveByGroup(uid, subject.getId());
+                if (GroupUtil.isNotMember(senderId, (Group) subject)) {
+                    biliLiveService.addBiliLiveByGroup(uid, subject.getId());
+                } else {
+                    return PERMISSION_DENIED;
+                }
             }
             msg = biliRequestService.getName(uid) + StaticText.ADD_SUCCESS;
         }
@@ -174,16 +187,20 @@ public class LiveCommand implements EverywhereCommand {
             }
         }
         if (subject instanceof Group) {
-            for (BiliLive live : biliLives) {
-                String starGroup = live.getStarGroup();
-                ArrayList<Long> longs = ListUtil.stringToLongList(starGroup);
-                boolean isExist = longs.contains(subject.getId());
-                if (isExist) {
-                    stars.add(live.getName() + "-->" + live.getUid());
+            if (GroupUtil.isNotMember(sender.getId(), (Group) subject)) {
+                for (BiliLive live : biliLives) {
+                    String starGroup = live.getStarGroup();
+                    ArrayList<Long> longs = ListUtil.stringToLongList(starGroup);
+                    boolean isExist = longs.contains(subject.getId());
+                    if (isExist) {
+                        stars.add(live.getName() + "-->" + live.getUid());
+                    }
                 }
+            } else {
+                msg = PERMISSION_DENIED;
             }
         }
-        if (stars.size() != 0){
+        if (stars.size() != 0) {
             StringBuffer stringBuffer = new StringBuffer();
             stringBuffer.append("已关注用户：\n");
             for (String star : stars) {
