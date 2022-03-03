@@ -4,8 +4,6 @@ import com.yjymh.penny.command.CommandConfig;
 import com.yjymh.penny.command.EverywhereCommand;
 import com.yjymh.penny.command.FriendCommand;
 import com.yjymh.penny.command.GroupCommand;
-import com.yjymh.penny.entity.KeyWord;
-import com.yjymh.penny.service.KeyWordService;
 import com.yjymh.penny.utils.StringUtil;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Member;
@@ -29,9 +27,6 @@ public class MessageEvents extends SimpleListenerHost {
     @Autowired
     private CommandConfig commandConfig;
 
-    @Autowired
-    private KeyWordService keyWordService;
-
     /**
      * 所有消息事件
      */
@@ -46,7 +41,7 @@ public class MessageEvents extends SimpleListenerHost {
             return ListeningStatus.LISTENING;
         }
 
-        FriendCommand command = (FriendCommand) commandConfig.getCommand(oriMsg, commandConfig.friendCommands);
+        FriendCommand command = (FriendCommand) commandConfig.getCommand(oriMsg, CommandConfig.friendCommands);
         if (null == command) {
             return ListeningStatus.LISTENING;
         }
@@ -117,31 +112,6 @@ public class MessageEvents extends SimpleListenerHost {
 
         return ListeningStatus.LISTENING;
 
-    }
-
-    @NotNull
-    @EventHandler
-    public ListeningStatus plainGroupMessage(@NotNull GroupMessageEvent event) {
-
-        Long group = event.getGroup().getId();
-        String oriMsg = event.getMessage().contentToString();
-
-        if (commandConfig.isCommand(oriMsg)) {
-            return ListeningStatus.LISTENING;
-        }
-
-        try {
-            KeyWord keyWord = keyWordService.queryWordByKey(oriMsg, group);
-
-            if (keyWord != null) {
-                String word = keyWord.getWord();
-                event.getGroup().sendMessage(word);
-            }
-        } catch (Exception e) {
-            return ListeningStatus.LISTENING;
-        }
-
-        return ListeningStatus.LISTENING;
     }
 
     private ArrayList<String> getArgs(String msg) {
